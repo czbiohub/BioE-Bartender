@@ -5,11 +5,14 @@
 #define PIN_STEP 6
 #define PIN_EN 13
 #define PIN_DISPENSE 7
-#define US_PER_STEP 10
+#define MOTOR_PAUSE_US 10
 
-unsigned long total_steps = 0;
-unsigned int uL_dispense = 3000;
 void step_motor(void);
+
+unsigned int uL_dispense = 1500;
+unsigned long total_steps = long(uL_dispense) * long(STEPS_PER_REV) / long(UL_PER_REV);
+int US_PER_STEP = long(DISPENSE_MS) * 1000 / total_steps - MOTOR_PAUSE_US * 2; // Correcting for motor pulse pause
+
 
 void setup() {
   pinMode(PIN_STEP, OUTPUT);
@@ -21,14 +24,13 @@ void setup() {
 }
 
 void loop() {
+  unsigned long steps = total_steps;
   if(digitalRead(PIN_DISPENSE) == LOW){
-    total_steps = long(uL_dispense) * long(STEPS_PER_REV) / long(UL_PER_REV);
-    US_PER_STEP = long(DISPENSE_MS) * 1000 / total_steps - motor_pause_us * 2; // Correcting for motor pulse pause
     digitalWrite(PIN_EN, LOW);
-    while(total_steps > 0){
+    while(steps > 0){
       step_motor();
       delayMicroseconds(US_PER_STEP);
-      total_steps--;
+      steps--;
     }
     digitalWrite(PIN_EN, HIGH);
     while(digitalRead( PIN_DISPENSE ) == LOW){ }

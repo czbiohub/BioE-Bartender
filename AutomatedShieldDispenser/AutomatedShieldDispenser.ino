@@ -77,7 +77,7 @@ void primeSystem(void){
   if(digitalRead(PIN_RUN_SENSE) == LOW){ digitalWrite(PIN_PUMP, HIGH); }
   while(digitalRead(PIN_RUN_SENSE) == LOW){ delay(20); }
   digitalWrite(PIN_PUMP, LOW);
-  delay(2000);
+  delay(4000);
   for(int i = 7; i > 0; i--){moveFrac(OFFSET_FRACS);}
   moveFrac(OFFSET_FRACS/2);
 }
@@ -85,11 +85,12 @@ void primeSystem(void){
 void runProcedure(void){
   homeFrac();
   dispense();
+  delay(3000);
   for(int i = 7; i > 0; i--){
     moveFrac(OFFSET_FRACS);
     dispense();
+    delay(3000);
   }
-  delay(2000);
   moveFrac(OFFSET_FRACS/2);
 }
 
