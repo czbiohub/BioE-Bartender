@@ -9,7 +9,7 @@
 
 void step_motor(void);
 
-unsigned int uL_dispense = 1500;
+unsigned int uL_dispense = 700;
 unsigned long total_steps = long(uL_dispense) * long(STEPS_PER_REV) / long(UL_PER_REV);
 int US_PER_STEP = long(DISPENSE_MS) * 1000 / total_steps - MOTOR_PAUSE_US * 2; // Correcting for motor pulse pause
 
